@@ -6,6 +6,10 @@ data "aws_key_pair" "key" {
   key_name = "mykey"
 }
 
+# -------------------------------------------------------------------------------
+# Calling vpc module to create the Network infrastructure
+# -------------------------------------------------------------------------------
+
 module "vpc" {
   source   = "../network"
   vpc_cidr = var.vpc_cidr
@@ -15,20 +19,18 @@ module "vpc" {
 }
 
 # -------------------------------------------------------------------------------
-# CREATE AN EC2 UBUNTU INSTANCE
+# Create EC2 instance with Linux or Ubuntu OS
 # -------------------------------------------------------------------------------
 
-resource "aws_instance" "ubuntu" {
-  ami           = var.ec2_specs.ami
+resource "aws_instance" "project" {
+  ami           = var.tags.os == "Ubuntu" ? var.ec2_specs.ami-amazon-ubuntu : var.tags.os == "Linux" ? var.ec2_specs.ami-amazon-linux : null
   instance_type = var.ec2_specs.instance_type
   key_name      = data.aws_key_pair.key.key_name
   subnet_id     = module.vpc.public_subnet_id
-  vpc_security_group_ids = [
-    aws_security_group.sg_public_instance.id
-  ]
-  user_data = file("./modules/compute/scripts/user_data.sh")
+  vpc_security_group_ids = [aws_security_group.sg_public_instance.id]
+  user_data = var.tags.os == "Ubuntu" ? file("./modules/compute/scripts/ubuntu.sh") : var.tags.os == "Linux" ? file("./modules/compute/scripts/linux.sh") : null
   tags = {
-    Name = "ubuntu-${local.sufix}"
+    Name = var.tags.os == "Ubuntu" ? "ubuntu-instance-${local.sufix}" : var.tags.os == "Linux" ? "linux-instance-${local.sufix}" : null
   }
 }
 
