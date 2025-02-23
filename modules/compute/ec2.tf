@@ -25,6 +25,7 @@ resource "aws_instance" "ubuntu" {
   vpc_security_group_ids = [
     aws_security_group.sg_public_instance.id
   ]
+  user_data = file("scripts/user_data.sh")
   tags = {
     Name = "ubuntu-${local.sufix}"
   }

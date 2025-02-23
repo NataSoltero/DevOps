@@ -34,3 +34,41 @@ resource "aws_subnet" "public_subnet" {
 #}
 #depends_on = [aws_subnet.public_subnet]
 #}
+
+# -------------------------------------------------------------------------------
+# Internet gateway to connect the instance to public internet
+# -------------------------------------------------------------------------------
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "IGW-soltero-vpc-${local.sufix}"
+  }
+}
+
+# -------------------------------------------------------------------------------
+# Route table to direct network traffic 
+# -------------------------------------------------------------------------------
+
+resource "aws_route_table" "public_crt" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name = "public-crt-${local.sufix}"
+  }
+}
+
+# -------------------------------------------------------------------------------
+# Rout table association to link route table to public subnet
+# -------------------------------------------------------------------------------
+
+resource "aws_route_table_association" "crta_public_subnet" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.public_crt.id
+}
