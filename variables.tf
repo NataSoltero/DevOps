@@ -1,6 +1,6 @@
 variable "region" {
   description = "AWS region to deploy infra"
-  type = string
+  type        = string
 }
 
 variable "tags" {
@@ -8,12 +8,27 @@ variable "tags" {
   type        = map(string)
 }
 
-variable "virgina_cidr" {
-  description = "CIDR Virginia"
+variable "vpc_cidr" {
+  description = "VPC CIDR"
   type        = string
 }
 
 variable "subnets" {
   description = "Subnets list"
   type        = list(string)
+}
+
+variable "ec2_specs" {
+  description = "EC2 instance specifications"
+  type        = map(string)
+}
+
+variable "ingress_port_list" {
+  description = "Ingress port list"
+  type        = list(number)
+}
+
+variable "sg_ingress_cidr" {
+  description = "CIDR for security group ingress"
+  type        = string
 }

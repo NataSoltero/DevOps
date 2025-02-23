@@ -1,6 +1,6 @@
 variable "region" {
   description = "AWS region to deploy infra"
-  type = string
+  type        = string
 }
 
 variable "tags" {
@@ -8,8 +8,8 @@ variable "tags" {
   type        = map(string)
 }
 
-variable "virgina_cidr" {
-  description = "CIDR Virginia"
+variable "vpc_cidr" {
+  description = "VPC CIDR"
   type        = string
 }
 

@@ -2,10 +2,13 @@
 # Calling the network module to deploy the VPC and subnets
 # -------------------------------------------------------------------------------
 
-module "vpc" {
-  source = "./modules/network"
-  virgina_cidr = var.virgina_cidr
-  region = var.region
-  subnets = var.subnets
-  tags = var.tags
+module "instance" {
+  source            = "./modules/compute"
+  ingress_port_list = var.ingress_port_list
+  sg_ingress_cidr   = var.sg_ingress_cidr
+  ec2_specs         = var.ec2_specs
+  subnets           = var.subnets
+  region            = var.region
+  vpc_cidr          = var.vpc_cidr
+  tags              = var.tags
 }
