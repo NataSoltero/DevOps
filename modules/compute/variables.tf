@@ -32,3 +32,8 @@ variable "subnets" {
   description = "Subnets list"
   type        = list(string)
 }
+
+variable "paths" {
+  description = "Paths for user data"
+  type        = map(string)
+}

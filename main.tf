@@ -11,4 +11,5 @@ module "instance" {
   region            = var.region
   vpc_cidr          = var.vpc_cidr
   tags              = var.tags
+  paths             = var.paths
 }

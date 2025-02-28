@@ -32,3 +32,8 @@ variable "sg_ingress_cidr" {
   description = "CIDR for security group ingress"
   type        = string
 }
+
+variable "paths" {
+  description = "Paths for user data"
+  type        = map(string)
+}
